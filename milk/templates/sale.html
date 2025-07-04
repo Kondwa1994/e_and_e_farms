@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static custom_filters %}
+
+{% block content %}
+<h1>Sales Records</h1>
+
+{% if has_unpaid %}
+<div class="alert">
+    <strong>Alert:</strong> There are unpaid balances! Please review highlighted rows.
+</div>
+{% endif %}
+
+{% for date, sales_list in sales_by_date.items %}
+    <h2>Date: {{ date }}</h2>
+    <table class="sales-table">
+        <thead>
+            <tr>
+                <th>Customer Name & Contact</th>
+                <th>Product Description</th>
+                <th>Qty</th>
+                <th>Price / Item (MWK)</th>
+                <th>Amount (MWK)</th>
+                <th>Paid / Credit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales_list %}
+            <tr class="{% if sale.paid < sale.amount %}unpaid{% endif %}">
+                <td>{{ sale.customer }}</td>
+                <td>Milk</td>
+                <td>{{ sale.litres_sold }}</td>
+                <td>{{ sale.price_per_litre|floatformat:2 }}</td>
+                <td>{{ sale.amount|floatformat:2 }}</td>
+                <td>
+                    {% if sale.paid >= sale.amount %}
+                        Paid
+                    {% else %}
+                        Credit (Unpaid: {{ sale.amount|add:"-"|add:sale.paid|floatformat:2 }})
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="daily-total">Total Sales for {{ date }}:</td>
+                <td colspan="2" class="daily-total">
+                    {{ daily_totals|dict_key:date|floatformat:2 }} MWK
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+{% empty %}
+    <p>No sales records found.</p>
+{% endfor %}
+{% endblock %}

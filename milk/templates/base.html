@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E & E Farms</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar" id="sidebar">
+        <img src="{% static 'logo.png' %}" alt="E & E Farms Logo" class="logo">
+        <nav>
+            <a href="{% url 'home' %}">🏠OVERVIEW</a>
+            <a href="{% url 'sale' %}">💰 SALE</a>
+            <a href="{% url 'production' %}">🥛 PRODUCTION</a>
+            <a href="{% url 'expense' %}">📉 EXPENSES</a>
+            <a href="{% url 'Feed' %}">📉 FEED</a>
+            <a href="{% url 'Livestock' %}">📉 LIVESTOCK</a>
+            <a href="{% url 'Inventory' %}">📉 INVENTORY</a>
+        </nav>
+    </aside>
+
+    <div class="mobile-header">
+    <button id="menu-toggle">☰</button>
+    <img src="{% static 'logo.png' %}" alt="E&E Farms Logo" class="mobile-logo">
+    </div>
+
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2025 E & Farms <br> Developed & Designed by <a href="https://www.linkedin.com/in/kondwani-sichali-0a5150145?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" style="color: #007BFF; text-decoration: none;">Kondwani Sichali</a></p>
+</footer>
+
+<script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+    });
+</script>
+</body>
+</html>
